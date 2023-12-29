@@ -1,0 +1,70 @@
+# Install packages for wordpress and php-fpm
+
+## PHP-FPM
+
+To run WordPress and PHP-FPM on an Alpine-based Docker container, you will need to install several PHP extensions along with PHP-FPM. Here's a list of necessary packages and their purposes:
+
+- `php7-fpm`: This is the FastCGI Process Manager for PHP. It's a PHP extension that allows a server to handle high loads.
+- `php7-mysqli`: This is the MySQL database driver for PHP. WordPress uses MySQL for data storage, so this extension is necessary.
+- `php7-json`: This extension implements the JSON data-interchange format. WordPress uses JSON for various APIs.
+- `php7-openssl`: This extension is used for secure data transmission. WordPress uses it for various APIs and secure data transmission.
+- `php7-curl`: This extension allows PHP to make HTTP requests. WordPress uses it for various APIs.
+- `php7-zlib`: This extension allows PHP to read and write gzip (.gz) compressed files.
+- `php7-xml`: This extension helps PHP to parse XML. WordPress uses it for various APIs.
+- `php7-phar`: This extension allows PHP to read PHP Archive (Phar) files.
+- `php7-intl`: This extension is used to handle Unicode characters, and is used by WordPress for internationalization.
+- `php7-dom`: This extension allows PHP to handle DOM (Document Object Model) for XML and HTML documents. WordPress uses it for various APIs.
+- `php7-xmlreader`: This extension helps PHP to read XML. WordPress uses it for various APIs.
+- `php7-ctype`: This extension checks if the type of a variable is a character. WordPress uses it for various APIs.
+- `php7-session`: This extension provides session management in PHP. WordPress uses it for managing user sessions.
+- `php7-mbstring`: This extension provides multibyte specific string functions. WordPress uses it for string manipulation with multibyte encoding.
+
+So, your `RUN` directive would look like this:
+
+```dockerfile
+RUN apk update && apk upgrade && \
+    apk add php7-fpm php7-mysqli php7-json php7-openssl php7-curl \
+    php7-zlib php7-xml php7-phar php7-intl php7-dom php7-xmlreader \
+    php7-ctype php7-session php7-mbstring curl
+```
+
+This command will update and upgrade the system packages, and then install the necessary PHP extensions for WordPress and PHP-FPM.
+
+## WordPress
+
+In Dockerfile, the `RUN` directive is used to download and install WordPress. 
+Here's a breakdown of what each part of the command does:
+
+- `curl -LO https://wordpress.org/latest.tar.gz`: This command uses `curl` to download the latest version of WordPress from the official WordPress site. 
+The `-L` option tells `curl` to follow any redirects, which is necessary because the URL redirects to the latest version of WordPress. 
+The `-O` option tells `curl` to save the downloaded file with the same name as in the URL, in this case `latest.tar.gz`.
+
+- `tar -xzf latest.tar.gz`: This command uses `tar` to extract the downloaded WordPress archive. 
+The 
+`-x` option tells `tar` to extract, 
+`-z` tells it to uncompress using gzip (because the file is `latest.tar.gz`), and 
+`-f` specifies the file to extract.
+
+The WordPress files should be moved to the directory that your web server (in this case, PHP-FPM) is configured to serve files from. 
+In many configurations, this is `/var/www/html` or `/var/www/localhost/htdocs`. 
+However, the exact directory can vary based on your specific configuration.
+
+For a typical PHP-FPM setup on Alpine, the WordPress files usualy live in `/var/www/localhost/htdocs/wordpress`:
+
+```dockerfile
+&& mv wordpress /var/www/localhost/htdocs/wordpress
+```
+
+This command moves the `wordpress` directory (which was extracted from the `latest.tar.gz` file) to the `/var/www/localhost/htdocs/wordpress` directory.
+
+- `&& rm latest.tar.gz`: This command removes the `latest.tar.gz` file after WordPress has been extracted and moved to the appropriate directory. This is done to save space in the Docker image.
+
+So, the complete `RUN` directive might look like this:
+
+```dockerfile
+RUN curl -LO https://wordpress.org/latest.tar.gz \
+    && tar -xzf latest.tar.gz \
+    && mv wordpress /var/www/localhost/htdocs/wordpress \
+    && rm latest.tar.gz
+```
+

@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  wordpress:
+    build:
+      context: ./wordpress/
+      dockerfile: Dockerfile
+    image: wordpress
+    ports:
+      - "9000:9000"
+    environment:
+      WP_ADMIN: sbocanci
+      WP_ADMIN_PASS: sbocanci
+      WP_ADMIN_EMAIL: sbocanci@student.42.fr
+      WP_NAME: wordpress
+      WP_USER01: user01
+      WP_USER01_PASS: user01
+      WP_USER01_EMAIL: example@gmail.com
+      WP_HOST: mariadb
+      WP_URL: https://localhost
+      WP_TITLE: "Wordpress"
+    volumes:
+      - wordpress:/var/www/html
+
+volumes:
+  wordpress:
+    driver: local
+#    driver_opts:
+#      type: bind
+#      o: bind
+#      device: /home/sbocanci/data/wordpress
+
