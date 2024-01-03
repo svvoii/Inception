@@ -68,3 +68,23 @@ RUN curl -LO https://wordpress.org/latest.tar.gz \
     && rm latest.tar.gz
 ```
 
+## www.conf
+
+The `www.conf` file is typically included with the PHP-FPM installation and is not usually downloaded separately. However, if you need a copy of the default `www.conf` file, you can find it in the PHP source code.
+
+Here are the steps to download it:
+
+1. Visit the PHP source code repository on GitHub: https://github.com/php/php-src
+
+2. Navigate to the `sapi/fpm` directory.
+
+3. Inside the `sapi/fpm` directory, navigate to the `www.conf.in` file.
+
+4. Click on the `Raw` button to view the raw file content.
+
+5. Right-click on the page and select `Save As` to download the file.
+
+Please note that this is a template file and contains placeholders that are replaced during the PHP build process. You will need to replace these placeholders with actual values suitable for your environment.
+```
+https://raw.githubusercontent.com/php/php-src/master/sapi/fpm/www.conf.in
+```

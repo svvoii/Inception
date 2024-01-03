@@ -25,7 +25,8 @@ RUN apk update && apk add \
 
 COPY ./tools/www.conf /var/www/html/
 COPY ./tools/wp-config-template.php /var/www/html/
-COPY ./tools/wordpress_entrypoint.sh /usr/local/bin
+COPY ./tools/wordpress_entrypoint.sh /var/www/html/
+#COPY ./tools/wordpress_entrypoint.sh /usr/local/bin/
 
 RUN mkdir -p /run/php
 

@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    image: mariadb:the-one
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    volumes:
+      - mariadb:/var/lib/mysql
 
   wordpress:
     container_name: wordpress
@@ -13,12 +23,28 @@ services:
     volumes:
       - wordpress:/var/www/html
   
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    image: nginx:the-one
+    ports:
+      - "8080:80"
+    volumes:
+      - wordpress:/var/www/html
+
 volumes:
   wordpress:
     driver: local
     name: wordpress
     driver_opts:
       type: none
-      device: /home/sbocanci/data/wordpress_data
+      device: /home/sbocanci/data/wordpress
       o: bind
   
+  mariadb:
+    driver: local
+    name: mariadb
+    driver_opts:
+      type: none
+      device: /home/sbocanci/data/mariadb
+      o: bind
