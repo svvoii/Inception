@@ -1,9 +1,9 @@
 # This will setup and configure the wordpress + php-fpm container
 # alpine 3.14 was the last version to comtain the PHP packages in its main repository..
-FROM alpine:3.14
+FROM alpine:lastest
 
 # Install packages for wordpress and php-fpm
-RUN apk update && apk upgrade && apk add \
+RUN apk update && apk add \
 	php7-fpm \
 	php7-mysqli \
 	php7-json \
@@ -18,17 +18,20 @@ RUN apk update && apk upgrade && apk add \
 	php7-ctype \
 	php7-session \
 	php7-mbstring \
+	--no-cache gettext \
 	curl
 
-WORKDIR /var/www/localhost/htdocs/
+# EXPOSE 9000
 
-# Download and install wordpress
-RUN curl -LO https://wordpress.org/latest.tar.gz \
-	&& tar -xzf latest.tar.gz \
-	&& rm -rf latest.tar.gz
+COPY ./tools/www.conf /var/www/html/
+COPY ./tools/wp-config-template.php /var/www/html/
+COPY ./tools/wordpress_entrypoint.sh /usr/local/bin
 
-WORKDIR /var/www/localhost/htdocs/wordpress
+RUN mkdir -p /run/php
 
-EXPOSE 9000
+# Set the entrypoint / startup script
+ENTRYPOINT ["wordpress_entrypoint.sh"]
 
-CMD ["php-fpm7", "-F"]
+WORKDIR /var/www/html/
+
+CMD ["/usr/sbin/php-fpm7", "-F"]
