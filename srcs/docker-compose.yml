@@ -3,7 +3,7 @@ version: '3'
 services:
 
   wordpress:
-    container_name: wordpress
+    container_name: wordpress-the-one
     build: ./requirements/wordpress
     image: wordpress:the-one
     ports:
