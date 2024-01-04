@@ -31,7 +31,7 @@ COPY ./tools/wordpress_entrypoint.sh /var/www/html/
 RUN mkdir -p /run/php
 
 # Set the entrypoint / startup script
-ENTRYPOINT ["wordpress_entrypoint.sh"]
+ENTRYPOINT ["sh", "wordpress_entrypoint.sh"]
 
 WORKDIR /var/www/html/
 
