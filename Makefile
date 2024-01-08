@@ -1,16 +1,32 @@
+# ADDING SOME COLORS
+GREEN = \033[0;32m
+RED = \033[0;31m
+MAGENTA = \033[0;35m
+CYAN = \033[0;36m
+NC = \033[0m
+
+build:
+	mkdir -p /home/$(USER)/data/wordpress_data
+	mkdir -p /home/$(USER)/data/mariadb_data
+	docker compose -f srcs/docker-compose.yml build
+
 up:
 	docker compose -f srcs/docker-compose.yml up -d
 
 down:
 	docker compose -f srcs/docker-compose.yml down --rmi all --volumes
-	sudo rm -rf /home/$(USER)/data/wordpress_data
+	
+fclean:
+	sudo rm -fr /home/$(USER)/data/wordpress_data
+	sudo rm -fr /home/$(USER)/data/mariadb_data
+	docker system prune -a --volumes --force
 
-build:
-	mkdir -p /home/$(USER)/data/wordpress_data
-	docker compose -f srcs/docker-compose.yml build
-
-rebuild:
-	docker compose -f srcs/docker-compose.yml down && docker compose -f path/to/docker-compose.yml build && docker compose -f path/to/docker-compose.yml up -d
+ls:
+	@echo "$(CYAN)Docker images:$(NC)" && docker images
+	@echo "$(CYAN)Running containers:$(NC)" && docker ps
+	@echo "$(CYAN)All containers:$(NC)" && docker ps -a
 
 logs:
 	docker compose -f srcs/docker-compose.yml logs -f
+
+.PHONY: build up down fclean ls logs
