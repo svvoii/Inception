@@ -2,23 +2,60 @@ version: '3'
 
 services:
 
+  mariadb:
+    container_name: mariadb-the-one
+    build: ./requirements/mariadb
+    image: mariadb:the-one
+    ports:
+      - "3306:3306"
+    env_file: .env
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks: 
+      - inception
+
   wordpress:
     container_name: wordpress-the-one
     build: ./requirements/wordpress
     image: wordpress:the-one
-    ports:
+    ports: 
       - "9000:9000"
-    env_file:
-      - .env
+    env_file: .env
     volumes:
       - wordpress:/var/www/html
+    networks: 
+      - inception
   
+  nginx:
+    container_name: nginx-the-one
+    build: ./requirements/nginx
+    image: nginx:the-one
+    ports: 
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+
 volumes:
   wordpress:
     driver: local
-    name: wordpress
+    name: wordpress_vol
     driver_opts:
       type: none
-      device: /home/sbocanci/data/wordpress_data
       o: bind
+      device: /home/sbocanci/data/wordpress_data
   
+  mariadb:
+    driver: local
+    name: mariadb_vol
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/sbocanci/data/mariadb_data
+  
+networks:
+  inception:
+    name: inception_net
+    driver: bridge

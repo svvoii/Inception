@@ -14,17 +14,20 @@ up:
 	docker compose -f srcs/docker-compose.yml up -d
 
 down:
-	docker compose -f srcs/docker-compose.yml down --rmi all --volumes
+	docker compose -f srcs/docker-compose.yml down --volumes
 	
 fclean:
 	sudo rm -fr /home/$(USER)/data/wordpress_data
 	sudo rm -fr /home/$(USER)/data/mariadb_data
-	docker system prune -a --volumes --force
+	docker volume prune --force
+	docker system prune --all --force
 
 ls:
 	@echo "$(CYAN)Docker images:$(NC)" && docker images
 	@echo "$(CYAN)Running containers:$(NC)" && docker ps
 	@echo "$(CYAN)All containers:$(NC)" && docker ps -a
+	@echo "$(CYAN)Volumes:$(NC)" && docker volume ls
+	@echo "$(CYAN)Networks:$(NC)" && docker network ls
 
 logs:
 	docker compose -f srcs/docker-compose.yml logs -f

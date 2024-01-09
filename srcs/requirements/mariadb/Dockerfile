@@ -13,6 +13,4 @@ COPY ./tools/config_mariadb.sh /tmp/
 
 RUN chmod +x /tmp/config_mariadb.sh
 
-#EXPOSE 3306
-
 ENTRYPOINT ["/tmp/config_mariadb.sh"]
