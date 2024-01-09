@@ -19,8 +19,8 @@ down:
 fclean:
 	sudo rm -fr /home/$(USER)/data/wordpress_data
 	sudo rm -fr /home/$(USER)/data/mariadb_data
-	docker volume prune --force
 	docker system prune --all --force
+#	docker volume prune --force
 
 ls:
 	@echo "$(CYAN)Docker images:$(NC)" && docker images
