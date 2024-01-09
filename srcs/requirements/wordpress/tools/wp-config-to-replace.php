@@ -1,6 +1,6 @@
 <?php
-define( 'DB_NAME', '${MYSQL_DATABASE}' );
-define( 'DB_USER', '${MYSQL_USER}' );
-define( 'DB_PASSWORD', '${MYSQL_PASSWORD}' );
-define( 'DB_HOST', '${MYSQL_HOSTNAME}' );
+define( 'DB_NAME', '${MARIADB_NAME}' );
+define( 'DB_USER', '${MARIADB_USER}' );
+define( 'DB_PASSWORD', '${MARIADB_PASSWORD}' );
+define( 'DB_HOST', '${MARIADB_HOSTNAME}' );
 ?>
