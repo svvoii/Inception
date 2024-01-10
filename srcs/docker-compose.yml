@@ -25,18 +25,22 @@ services:
       - wordpress:/var/www/html
     networks: 
       - inception
+    depends_on:
+      - mariadb
   
   nginx:
     container_name: nginx-the-one
     build: ./requirements/nginx
     image: nginx:the-one
     ports: 
-      - "8080:80"
+      - "8080:8080"
       - "443:443"
     volumes:
       - wordpress:/var/www/html
     networks:
       - inception
+    depends_on:
+      - wordpress
 
 volumes:
   wordpress:

@@ -30,6 +30,6 @@ ls:
 	@echo "$(CYAN)Networks:$(NC)" && docker network ls
 
 logs:
-	docker compose -f srcs/docker-compose.yml logs -f
+	docker compose -f srcs/docker-compose.yml logs
 
 .PHONY: build up down fclean ls logs

@@ -6,8 +6,7 @@ RUN mkdir -p /run/mysqld /var/lib/mysql
 
 RUN sed -i "s|skip-networking|#skip-networking|g" /etc/my.cnf.d/mariadb-server.cnf
 
-RUN mariadb-install-db --user=mysql --datadir=/var/lib/mysql
-#	--skip-test-db
+RUN mariadb-install-db --user=mysql --datadir=/var/lib/mysql --skip-test-db
 
 COPY ./tools/config_mariadb.sh /tmp/
 
