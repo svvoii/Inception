@@ -21,22 +21,21 @@ RUN apk update && apk add \
 	curl \
 	mariadb-client
 
+# PHP configuration
+RUN adduser -S nginx && addgroup -S nginx
+COPY ./tools/php-fpm.conf /etc/php7/php-fpm.conf
 COPY ./tools/www.conf  /etc/php7/php-fpm.d/www.conf
-COPY ./tools/wp-config-to-replace.php /var/www/html/
-COPY ./tools/script-to-replace-wp-config.sh /var/www/html/
 
-RUN mkdir -p /run/php
-
-WORKDIR /var/www/html/
+# Main webpage
+COPY ./tools/index.html /tmp/
 
 # Download and install wordpress. Extract the archive in the same `/var/www/html/` folder with `--strip-components=1` to avoid creating a subfolder
-RUN curl -O https://wordpress.org/latest.tar.gz \
-	&& tar -xvf latest.tar.gz --strip-components=1 \
-	&& rm latest.tar.gz \
-	&& sh script-to-replace-wp-config.sh
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+	&& chmod +x wp-cli.phar \
+	&& mv wp-cli.phar /usr/bin/wp
 
-RUN if ! getent group www-data >/dev/null 2>&1; then addgroup -g 82 -S www-data; fi \
-	&& if ! getent passwd www-data >/dev/null 2>&1; then adduser -u 82 -D -S -G www-data www-data; fi
+WORKDIR /var/www/html/wordpress
 
-# CMD ["/usr/sbin/php-fpm7", "-F"]
-CMD ["php-fpm7", "-F"]
+COPY ./tools/config_wordpress.sh /tmp/
+
+ENTRYPOINT ["sh", "/tmp/config_wordpress.sh"]
