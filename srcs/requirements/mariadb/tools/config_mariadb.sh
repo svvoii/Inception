@@ -1,5 +1,5 @@
 #!bin/sh
-echo "..running config_mariadb.sh script.."
+echo "..Running 'config_mariadb.sh' script.."
 
 if [ ! -d "/run/mysqld" ]; then
 	mkdir -p /run/mysqld
@@ -43,6 +43,8 @@ fi
 # Allowing remote connections
 sed -i "s|skip-networking|# skip-networking|g" /etc/my.cnf.d/mariadb-server.cnf
 sed -i "s|.*bind-address\s*=.*|bind-address=0.0.0.0|g" /etc/my.cnf.d/mariadb-server.cnf
+
+echo "..starting mariadb, port:3306."
 
 # Starting MariaDB
 exec /usr/bin/mysqld --user=mysql --console

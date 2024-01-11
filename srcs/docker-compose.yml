@@ -49,8 +49,8 @@ volumes:
     driver_opts:
       type: none
       o: bind
-#      device: /home/sbocanci/data/wordpress_data
-      device: /home/sv/data/wordpress_data
+      device: /home/sbocanci/data/wordpress_data
+#      device: /home/sv/data/wordpress_data
   
   mariadb:
     driver: local
@@ -58,8 +58,8 @@ volumes:
     driver_opts:
       type: none
       o: bind
-#      device: /home/sbocanci/data/mariadb_data
-      device: /home/sv/data/mariadb_data
+      device: /home/sbocanci/data/mariadb_data
+#      device: /home/sv/data/mariadb_data
   
 networks:
   inception:

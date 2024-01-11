@@ -1,3 +1,4 @@
+# Wordpress image
 # This will setup and configure the wordpress + php-fpm container
 # alpine 3.14 was the last version to comtain the PHP packages in its main repository..
 FROM alpine:3.14

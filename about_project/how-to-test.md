@@ -15,9 +15,15 @@ USE wordpress;
 USE ${MARIADB_NAME}; # name of the database
 
 show tables;
+# to show the content of a table
+SELECT * FROM <table_name>;
+SELECT * FROM <table_name> WHERE <column_name> = <value>;
+SELECT * FROM <table_name> limit 10;
+
+# shows the privileges of the user
 SHOW GRANTS FOR 'sbocanci'@'%'; # (sbocanci is the user)
 
-
+# creates a new table
 CREATE TABLE test_table (id INT, data VARCHAR(100));
 INSERT INTO test_table VALUES (1, 'Hello World');
 SELECT * FROM test_table;

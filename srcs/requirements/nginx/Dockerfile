@@ -1,3 +1,4 @@
+# NGINX image
 FROM alpine:3.18
 
 RUN apk update && apk add --no-cache \
@@ -13,6 +14,6 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 
 RUN mkdir -p /run/nginx
 
-COPY ./tools/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./tools/nginx.conf /etc/nginx/nginx.conf
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
