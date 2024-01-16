@@ -1,6 +1,6 @@
 # Install packages for wordpress and php-fpm
 
-## PHP-FPM
+# PHP-FPM
 
 To run WordPress and PHP-FPM on an Alpine-based Docker container, you will need to install several PHP extensions along with PHP-FPM. Here's a list of necessary packages and their purposes:
 
@@ -30,7 +30,50 @@ RUN apk update && apk upgrade && \
 
 This command will update and upgrade the system packages, and then install the necessary PHP extensions for WordPress and PHP-FPM.
 
-## WordPress
+## PHP Latest-Version
+```bash
+https://www.php.net/downloads.php
+```
+
+# WordPress
+
+### HOW TO INSTALL WordPress
+```bash
+https://developer.wordpress.org/advanced-administration/before-install/howto-install/
+
+# Download WordPress link:
+https://wordpress.org/latest.zip
+
+# Download link for bash/sh command:
+https://wordpress.org/latest.tar.gz
+# curl -LO https://wordpress.org/latest.tar.gz
+or:
+# wget https://wordpress.org/latest.tar.gz
+then:
+# tar -xzvf latest.tar.gz
+
+After this the WordPress package will be extracted into a folder called wordpress in the same directory that you downloaded latest.tar.gz
+
+
+# TO UNDERSTAND `wp-config.php`, `wp-config-sample.php` and edit the file:
+https://developer.wordpress.org/advanced-administration/wordpress/wp-config/
+
+# IMPORTANT VARIABLES TO BE SET in `wp-config.php`.
+# These variables must be set as environment variables via `.env` file and `docker-compose.yml` files:
+`DB_NAME` (The name of the database created in MySQL or MariaDB for WordPress)
+`DB_USER` (The username created in MySQL or MariaDB to access the database `DB_NAME`)
+`DB_PASSWORD` (The password for `DB_USER` created in MySQL or MariaDB to access the database `DB_NAME`)
+`DB_HOST` (The hostname ot the database service, in tis case mustbe the container name `mariadb-container-name`)
+
+```
+
+If the root directory of your web site is different, all the extracted contents should be moved over there.
+
+After this and `NGINX` default configuration file in proper place (see `NGINX` section), you should be able to access the WordPress installation page at `http://localhost:8000` on the host machine (where the docker is running). 
+
+```
+
+#### SOME EXPLANATIONS AND EXAMPLES OF `Dockerfile` DIRECTIVES:
 
 In Dockerfile, the `RUN` directive is used to download and install WordPress. 
 Here's a breakdown of what each part of the command does:
@@ -87,4 +130,23 @@ Here are the steps to download it:
 Please note that this is a template file and contains placeholders that are replaced during the PHP build process. You will need to replace these placeholders with actual values suitable for your environment.
 ```
 https://raw.githubusercontent.com/php/php-src/master/sapi/fpm/www.conf.in
+```
+
+## MARIADB_DATABASE
+
+```bash
+https://mariadb.org/download/?t=mariadb&p=mariadb&r=11.4.0&os=Linux&cpu=x86_64&pkg=tar_gz&i=systemd&m=icam
+```
+
+# NGINX
+
+```bash
+# The following link is an example of NGINX configuration file for WordPress:
+https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/
+
+
+# NGINX documentation:
+https://nginx.org/en/docs/
+
+
 ```

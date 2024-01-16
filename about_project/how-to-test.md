@@ -9,6 +9,10 @@ mysql -u root -p` (or `mysql -u root -p${MARIADB_ROOT_PASSWORD}
 # or
 mysql -u ${MARIADB_USER} -p${MARIADB_PASSWORD}
 
+# to show users
+SELECT user, host FROM mysql.user;
+
+# to show databases
 show databases;
 USE wordpress; 
 # or
