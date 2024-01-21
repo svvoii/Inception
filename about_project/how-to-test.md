@@ -48,7 +48,7 @@ docker exec -it wordpress-the-one /bin/sh
 ping mariadb-the-one
 
 # To test access to the mariadb container from the wordpress container
-mysql -h mariadb-the-one -u ${MARIADB_USER} -p${MARIADB_PASSWORD} -D ${MARIADB_NAME}
+mysql -h ${DB_HOSTNAME} -u ${DB_USER} -p${DB_PASSWORD} -D ${DB_NAME}
 
 # To check if user has necessary privileges
 SHOW GRANTS FOR 'sbocanci'@'%';

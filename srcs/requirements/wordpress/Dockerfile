@@ -1,42 +1,36 @@
-# Wordpress image
-# This will setup and configure the wordpress + php-fpm container
-# alpine 3.14 was the last version to comtain the PHP packages in its main repository..
-FROM alpine:3.14
+# Custom WordPress container image
+# This will setup and configure the latest wordpress + latest version of php-fpm 
+FROM alpine:latest
+
+# Adding "edge" repository where php-fpm is located !!!
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
 # Install packages for wordpress and php-fpm
-RUN apk update && apk add \
-	php7-fpm \
-	php7-mysqli \
-	php7-json \
-	php7-openssl \
-	php7-curl \
-	php7-zlib \
-	php7-xml \
-	php7-phar \
-	php7-intl \
-	php7-dom \
-	php7-xmlreader \
-	php7-ctype \
-	php7-session \
-	php7-mbstring \
+RUN apk update && apk add --no-cache \
 	curl \
-	mariadb-client
+	mariadb-client \
+	php \
+	php-fpm \
+	php-mysqli \
+	php-gd \
+	php-curl \
+	php-zip \
+	php-xml \
+	php-mbstring \
+	php-json \
+	php-intl \
+	php-dom \
+	php-phar \
+	php-session
 
-# PHP configuration
-RUN adduser -S nginx && addgroup -S nginx
-COPY ./tools/php-fpm.conf /etc/php7/php-fpm.conf
-COPY ./tools/www.conf  /etc/php7/php-fpm.d/www.conf
-
-# Main webpage
-COPY ./tools/index.html /tmp/
-
-# Download and install wordpress. Extract the archive in the same `/var/www/html/` folder with `--strip-components=1` to avoid creating a subfolder
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-	&& chmod +x wp-cli.phar \
-	&& mv wp-cli.phar /usr/bin/wp
-
-WORKDIR /var/www/html/wordpress
+# !!! ATTENTION. Exact location for PHP config files based on its version !!!
+# In `php-fpm.conf` line 17 and the very last line must contain the correct paths !
+COPY ./tools/php-fpm.conf /etc/php82/php-fpm.conf
+COPY ./tools/www.conf  /etc/php82/php-fpm.d/www.conf
 
 COPY ./tools/config_wordpress.sh /tmp/
+
+# EXPOSE 9000
 
 ENTRYPOINT ["sh", "/tmp/config_wordpress.sh"]

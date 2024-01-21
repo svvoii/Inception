@@ -1,47 +1,37 @@
-version: '3'
+version: '3.9'
 
 services:
-
+  # Database
   mariadb:
-    container_name: mariadb-the-one
+    container_name: mariadb-inception
     build: ./requirements/mariadb
-    image: mariadb:the-one
-    ports:
-      - "3306:3306"
+    image: mariadb:inception
     env_file: .env
-    volumes:
-      - mariadb:/var/lib/mysql
-    networks: 
-      - inception
+    volumes: [database:/var/lib/mysql]
+    networks: [inception] 
+    restart: always
 
+  # Wordpress + PHP-FPM 8.2
   wordpress:
-    container_name: wordpress-the-one
+    container_name: wordpress-inception
     build: ./requirements/wordpress
-    image: wordpress:the-one
-    ports: 
-      - "9000:9000"
+    image: wordpress:inception
     env_file: .env
-    volumes:
-      - wordpress:/var/www/html
-    networks: 
-      - inception
-    depends_on:
-      - mariadb
+    volumes: [wordpress:/var/www/html]
+    networks: [inception] 
+    depends_on: [mariadb]
   
+  # Web-Server
   nginx:
-    container_name: nginx-the-one
+    container_name: nginx-inception
     build: ./requirements/nginx
-    image: nginx:the-one
-    ports: 
-      - "8080:8080"
-      - "443:443"
-    volumes:
-      - wordpress:/var/www/html
-    networks:
-      - inception
-    depends_on:
-      - wordpress
+    image: nginx:inception
+    ports: ["443:443"]
+    volumes: [wordpress:/var/www/html]
+    networks: [inception]
+    depends_on: [wordpress]
 
+# Local directories mapping
 volumes:
   wordpress:
     driver: local
@@ -49,18 +39,19 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/sbocanci/data/wordpress_data
-#      device: /home/sv/data/wordpress_data
+#      device: /home/sbocanci/data/wordpress_data
+      device: /home/sv/data/wordpress_data
   
-  mariadb:
+  database:
     driver: local
     name: mariadb_vol
     driver_opts:
       type: none
       o: bind
-      device: /home/sbocanci/data/mariadb_data
-#      device: /home/sv/data/mariadb_data
+#      device: /home/sbocanci/data/mariadb_data
+      device: /home/sv/data/mariadb_data
   
+# Shared network for all containers
 networks:
   inception:
     name: inception_net

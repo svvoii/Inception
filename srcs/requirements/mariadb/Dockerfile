@@ -1,5 +1,5 @@
 # Mariadb image
-FROM alpine:3.18
+FROM alpine:latest
 
 RUN apk update && apk add --no-cache \
 	mariadb \
@@ -8,3 +8,7 @@ RUN apk update && apk add --no-cache \
 COPY ./tools/config_mariadb.sh /tmp/
 
 ENTRYPOINT ["sh", "/tmp/config_mariadb.sh"]
+
+# EXPOSE 3306
+
+CMD ["mariadbd", "--user=mysql"]
