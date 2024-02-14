@@ -1,10 +1,14 @@
-# Inception
+# Inception Project
 
-I liked this project immensely, so I have created a guide while doing it.  
-In the guide I start by using the official docker images from the docker hub to better understand how does it work.  
-I am then setting up each container manually (creating custom docker image) based on Alpine Linux.  
-Feel free to follow the guide here:  
-https://github.com/svvoii/Docker_WordPress_Nginx
-  
-I suggest to do each step separately to better understand the settup.  
+The Inception project was an incredibly enriching experience for me, and I've decided to document my journey through it in the form of a comprehensive guide.  
 
+The guide begins with the utilization of official Docker images sourced directly from Docker Hub. This initial step is crucial in gaining a fundamental understanding of how the system operates.  
+
+Following this, I delve into the process of setting up each container manually. This involves creating custom Docker images based on Alpine Linux, a lightweight and security-oriented distribution. This hands-on approach provides a deeper insight into the inner workings of the system.  
+
+I invite you to follow along with the guide at the following link:  
+[Inception Project Guide](https://github.com/svvoii/Docker_WordPress_Nginx)
+
+I strongly recommend undertaking each step individually. This segmented approach will allow for a more thorough comprehension of the setup process.
+
+[sbocanci](https://github.com/svvoii)  
