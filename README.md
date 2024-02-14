@@ -7,7 +7,7 @@ The guide begins with the utilization of official Docker images sourced directly
 Following this, I delve into the process of setting up each container manually. This involves creating custom Docker images based on Alpine Linux, a lightweight and security-oriented distribution. This hands-on approach provides a deeper insight into the inner workings of the system.  
 
 I invite you to follow along with the guide at the following link:  
-[Inception Project Guide](https://github.com/svvoii/Docker_WordPress_Nginx)
+[Docker Wordpress Nginx Setup](https://github.com/svvoii/Docker_WordPress_Nginx)
 
 I strongly recommend undertaking each step individually. This segmented approach will allow for a more thorough comprehension of the setup process.
 
