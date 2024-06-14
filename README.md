@@ -10,13 +10,15 @@ Following this, I delve into the process of setting up each container manually. 
 
 1. Setting up the VM.
 
-If you are doing this project on the school's computers, you have to use VirtualBox to create a Virtual Machine (VM) with LINUX OS of your choice since you dont have `sudo` rights on the school's computers. I personally used Debian latest version at the time, mostly because it is lighter than Ubuntu.  
+If you are doing this project on the school's computers, you have to use VirtualBox to create a Virtual Machine (VM) with a LINUX OS of your choice since you don't have `sudo` rights on the school's computers. I personally used the latest version of Debian at the time, mostly because it is lighter than Ubuntu.  
 
-If you choose Ubuntu, be aware that most likely you wont have enough space to download it on any of the school's computers, so you will have to download it to your `sgoinfre` instead.  
+If you choose Ubuntu, be aware that most likely you won't have enough space to download it on any of the school's computers `Download` folder, so you will have to download it to your `sgoinfre` instead.  
 
-Creating a VM from the downloaded ISO image shall be not a problem. Make sure to allocate around 30GB of space to the VM, and at least 2GB of RAM.  
+Creating a VM from the downloaded ISO image should not be a problem. Make sure to allocate around 30GB of space to the VM, and at least 2GB of RAM.  
 
 Once the OS is installed and running, make sure to install the `ssh` server, so you can connect to the VM from your host/school machine.  
+
+Dont forget to delete the installation ISO file once the OS is installed, to free up some space.  
 
 2. Installing `ssh` server on the VM.
 
@@ -53,9 +55,9 @@ In order to connect to the VM from your host/school machine, you have to set up 
 
 - Click `OK` on all windows to save the changes.  
 
-5. Connecting to the VM from your host/school machine.  
+## Connecting to the VM from your host/school machine
 
-Once the network is set up, you should be able to connect to the VM from your host/school machine using the following command:  
+Once the network is set up, you should be able to connect to the VM from your host/school machine using the following command:
 
 ```bash
 ssh -p 1111 user@localhost
@@ -73,21 +75,19 @@ or
 ssh localhost -p 1111
 ```
 
-6. Setting up the VSCode ssh connection to the VM.
+## Setting up the VSCode ssh connection to the VM.
 
-In order to connect to the VM from the VSCode, you have to install the `Remote - SSH` extension (look for `ssh` in the extensions tab, should be the first one).  
+In order to connect to the VM from VSCode, you have to install the `Remote - SSH` extension (look for `ssh` in the extensions tab, it should be the first one).  
 
-After installing the extension, click on the green icon on the very bottom left corner of the VSCode, and select `Remote-SSH: Connect to Host...`. Using the same command as above, you should be able to connect to the VM `ssh user@localhost -p 1111`.  
+After installing the extension, click on the green icon on the very bottom left corner of VSCode, and select `Remote-SSH: Connect to Host...`. Using the same command as above, you should be able to connect to the VM `ssh user@localhost -p 1111`.  
 
-The very first time you should see a new window with the `ssh` configuration file. Click on the `+` button on the top right corner to add a new configuration (you can just choose the first option). This is done once only.  
+The very first time, you should see a new window with the `ssh` configuration file. Click on the `+` button on the top right corner to add a new configuration (you can just choose the first option). This is done only once.  
 
-Then you can click on the green icon on the very bottom left corner of the VSCode once more, and select `localhost` from the list. This should connect you to the VM from the VSCode.  
-
+Then you can click on the green icon on the very bottom left corner of VSCode once more, and select `localhost` from the list. This should connect you to the VM from VSCode.  
 
 That should be it for setting up the working environment for this project.  
 
-If you are intersted to follow along with the guide I have created while doing this project, you can find it here: 
-[Docker Wordpress Nginx Setup](https://github.com/svvoii/Docker_WordPress_Nginx)
+If you are interested in following along with the guide I have created while doing this project, you can find it in this repo: [Docker Wordpress Nginx Setup](https://github.com/svvoii/Docker_WordPress_Nginx)
 
 I strongly recommend undertaking each step individually. This segmented approach will allow for a more thorough comprehension of the setup process.
 
