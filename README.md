@@ -14,13 +14,13 @@ If you are doing this project on the school's computers, you have to use Virtual
 
 If you choose Ubuntu, be aware that most likely you won't have enough space to download it on any of the school's computers `Download` folder, so you will have to download it to your `sgoinfre` instead.  
 
-Creating a VM from the downloaded ISO image should not be a problem. Make sure to allocate around 30GB of space to the VM, and at least 2GB of RAM.  
+Creating a VM from the downloaded ISO image should not be a problem. Make sure to allocate around 30GB of space to the VM, and at least 2GB of RAM. **NOTE**: *VM image must be installed in `sgoinfre` folder as well.*  
 
 Once the OS is installed and running, make sure to install the `ssh` server, so you can connect to the VM from your host/school machine.  
 
 Dont forget to delete the installation ISO file once the OS is installed, to free up some space.  
 
-2. Installing `ssh` server on the VM.
+2. Installing `ssh` server on the VM (Ubuntu).
 
 ```bash
 sudo apt update
@@ -30,7 +30,7 @@ sudo apt upgrade
 sudo apt install openssh-server
 ```
 
-3. Enabling `ssh` server on the VM.
+3. Enabling `ssh` server on the VM (Ubuntu).
 
 ```bash
 sudo systemctl start ssh
@@ -38,7 +38,7 @@ sudo systemctl start ssh
 sudo systemctl enable ssh
 ```
 
-4. Setting up the network on the VM.
+4. Setting up the network in the VM settings.
 
 In order to connect to the VM from your host/school machine, you have to set up the network on the VM.  
 
@@ -50,10 +50,18 @@ In order to connect to the VM from your host/school machine, you have to set up 
 
 - On the new window, click on the `+` button on the top right corner to add a new rule.  
 
-- Rule 1 >> Protocol: `TCP`, Host IP: `127.0.0.1`, Host Port: `1111`, Guest IP: `10.0.2.15`, Guest Port: `22`.
-*NOTE*: *The `Host Port` can be any port you want (except the reserved ones up to 1024 and also 4242). Other fields should be as indicated.*
+- Rule 1 >>  
+Protocol: `TCP`  
+Host IP: `127.0.0.1`  
+Host Port: `1111`  
+Guest IP: `10.0.2.15`  
+Guest Port: `22`  
+
+*NOTE*: *The `Host Port` can be any port you want (except the reserved numbers from 0 to 1024 and also 4242).*  
+*Other fields should be as indicated.*
 
 - Click `OK` on all windows to save the changes.  
+
 
 ## Connecting to the VM from your host/school machine
 
@@ -75,6 +83,7 @@ or
 ssh localhost -p 1111
 ```
 
+
 ## Setting up the VSCode ssh connection to the VM.
 
 In order to connect to the VM from VSCode, you have to install the `Remote - SSH` extension (look for `ssh` in the extensions tab, it should be the first one).  
@@ -83,7 +92,7 @@ After installing the extension, click on the green icon on the very bottom left 
 
 The very first time, you should see a new window with the `ssh` configuration file. Click on the `+` button on the top right corner to add a new configuration (you can just choose the first option). This is done only once.  
 
-Then you can click on the green icon on the very bottom left corner of VSCode once more, and select `localhost` from the list. This should connect you to the VM from VSCode.  
+Then you can click on the green icon on the very bottom left corner of VSCode once more, and select `localhost` from the list. This should connect VSCode to the VM OS.  
 
 That should be it for setting up the working environment for this project.  
 
@@ -91,4 +100,6 @@ If you are interested in following along with the guide I have created while doi
 
 I strongly recommend undertaking each step individually. This segmented approach will allow for a more thorough comprehension of the setup process.
 
+---
+This project was submitted in January 2024 as a part of 42 Common Core curriculum.  
 [sbocanci](https://github.com/svvoii)  
