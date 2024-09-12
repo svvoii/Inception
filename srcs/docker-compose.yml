@@ -1,4 +1,4 @@
-version: '3.9'
+# version: '3.9'
 
 services:
   # Database
@@ -39,8 +39,8 @@ volumes:
     driver_opts:
       type: none
       o: bind
-#      device: /home/sbocanci/data/wordpress_data
-      device: /home/sv/data/wordpress_data
+      device: /home/sbocanci/data/wordpress_data
+      # device: /home/sv/data/wordpress_data
   
   database:
     driver: local
@@ -48,8 +48,8 @@ volumes:
     driver_opts:
       type: none
       o: bind
-#      device: /home/sbocanci/data/mariadb_data
-      device: /home/sv/data/mariadb_data
+      device: /home/sbocanci/data/mariadb_data
+      # device: /home/sv/data/mariadb_data
   
 # Shared network for all containers
 networks:
