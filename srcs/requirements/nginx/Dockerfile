@@ -1,7 +1,7 @@
 # NGINX image
-FROM alpine:latest
+FROM debian:bullseye
 
-RUN apk update && apk add --no-cache \
+RUN apt-get update && apt-get install -y \
 	nginx \
 	openssl
 

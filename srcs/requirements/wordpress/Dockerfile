@@ -1,13 +1,8 @@
 # Custom WordPress container image
-# This will setup and configure the latest wordpress + latest version of php-fpm 
-FROM alpine:latest
-
-# Adding "edge" repository where php-fpm is located !!!
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+FROM debian:bullseye
 
 # Install packages for wordpress and php-fpm
-RUN apk update && apk add --no-cache \
+RUN apt-get update && apt-get install -y \
 	curl \
 	mariadb-client \
 	php \
@@ -21,13 +16,14 @@ RUN apk update && apk add --no-cache \
 	php-json \
 	php-intl \
 	php-dom \
-	php-phar \
-	php-session
+	php-phar && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
 
 # !!! ATTENTION. Exact location for PHP config files based on its version !!!
 # In `php-fpm.conf` line 17 and the very last line must contain the correct paths !
-COPY ./tools/php-fpm.conf /etc/php82/php-fpm.conf
-COPY ./tools/www.conf  /etc/php82/php-fpm.d/www.conf
+COPY ./tools/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
+COPY ./tools/www.conf  /etc/php/7.4/fpm/pool.d/www.conf
 
 COPY ./tools/config_wordpress.sh /tmp/
 
