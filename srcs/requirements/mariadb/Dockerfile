@@ -15,6 +15,6 @@ COPY ./tools/my.cnf /etc/mysql/my.cnf
 
 ENTRYPOINT ["sh", "/tmp/config_mariadb.sh"]
 
-EXPOSE 3306
+# EXPOSE 3306
 
 CMD ["mariadbd", "--user=mysql"]
