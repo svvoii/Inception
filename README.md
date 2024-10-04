@@ -5,22 +5,36 @@ The Inception project was an incredibly enriching experience for me, and I've de
 The guide begins with the utilization of official Docker images sourced directly from Docker Hub. This initial step is crucial in gaining a fundamental understanding of how the system operates.  
 
 Following this, I delve into the process of setting up each container manually. This involves creating custom Docker images based on Alpine Linux, a lightweight and security-oriented distribution. This hands-on approach provides a deeper insight into the inner workings of the system.  
+<br>
 
 ## SETTING UP THE WORKING ENVIRONMENT WITH VM and VSCode
 
-1. Setting up the VM.
+<br>
+
+### Setting up the VM.
 
 If you are doing this project on the school's computers, you have to use VirtualBox to create a Virtual Machine (VM) with a LINUX OS of your choice since you don't have `sudo` rights on the school's computers. I personally used the latest version of Debian at the time, mostly because it is lighter than Ubuntu.  
 
 If you choose Ubuntu, be aware that most likely you won't have enough space to download it on any of the school's computers `Download` folder, so you will have to download it to your `sgoinfre` instead.  
 
-Creating a VM from the downloaded ISO image should not be a problem. Make sure to allocate around 30GB of space to the VM, and at least 2GB of RAM. **NOTE**: *VM image must be installed in `sgoinfre` folder as well.*  
+A better choice would be to use `Debian` for your VM, since it is lighter than Ubuntu and the `.iso` image is much smaller.  
 
-Once the OS is installed and running, make sure to install the `ssh` server, so you can connect to the VM from your host/school machine.  
+here is the link to the download: (Installing Debian)[https://www.debian.org/distrib/netinst]  
 
-Dont forget to delete the installation ISO file once the OS is installed, to free up some space.  
 
-2. Installing `ssh` server on the VM (Ubuntu).
+Creating a VM from the downloaded ISO image should not be a problem. Make sure to allocate at least 10GB of space to the VM, and at least 2GB of `Base memory`, better 8. And about the same for CPU.  
+
+**NOTE**: *VM image must be installed in `sgoinfre` folder as well.*  
+
+Once the OS is installed and running, make sure to install the `ssh` server, so you can connect right away to the VM from your host/school machine.  
+
+**NOTE**: 
+- *`SSH` can be installed during the installation of `Debian` OS, so you don't have to do it later. On page `Software selection`, make sure to check the box for `SSH server`.*   
+- *It is better to use your school username when installing the OS, so you can connect to the VM using the same username.* 
+- *For the best experience you might want to clone the VM after its installation into `/tmp/` folder and work on the cloned version so you have the fastest possible VM on the school's computers. NOTE: that you would need to clone the VM every day you work on it, since the `/tmp/` folder is cleared every day.*   
+
+
+#### Manual `ssh` setup on the VM:
 
 ```bash
 sudo apt update
@@ -28,17 +42,15 @@ sudo apt update
 sudo apt upgrade
 
 sudo apt install openssh-server
-```
 
-3. Enabling `ssh` server on the VM (Ubuntu).
-
-```bash
 sudo systemctl start ssh
 
 sudo systemctl enable ssh
 ```
 
-4. Setting up the network in the VM settings.
+<br> 
+
+### Setting up the network in the VM settings.
 
 In order to connect to the VM from your host/school machine, you have to set up the network on the VM.  
 
@@ -62,6 +74,7 @@ Guest Port: `22`
 
 - Click `OK` on all windows to save the changes.  
 
+<br> 
 
 ## Connecting to the VM from your host/school machine
 
@@ -82,7 +95,72 @@ or
 ```bash
 ssh localhost -p 1111
 ```
+<br>
 
+## Installing Necessary Packages
+
+Once connected from the host to the VM make sure the current user can run sudo commands.  
+
+For that to happen first switch to `root` with:
+```
+su
+```
+
+and add your `user` to `/etc/sudoers` file with the following line:  
+```
+vi /etc/sudoers
+
+...
+'your_username'    ALL=(ALL:ALL) ALL
+
+```
+Save the file and exit.  
+`exit` to exit the `root` user.
+
+Then add the user to the `sudo` group:
+```
+sudo usermod -aG sudo $(whoami)
+```
+
+
+Install the necessary packages:
+
+```bash
+sudo apt install git make curl
+```
+
+Install `Docker` by following official documentation: (install docker on debian)[https://docs.docker.com/engine/install/debian/#install-using-the-repository]   
+
+step 1 and 2 are enough.
+
+Check if `Docker` is installed and running:
+
+```bash
+sudo systemctl status docker
+```
+
+Add the current user to the `docker` group:
+
+```bash
+sudo usermod -aG docker $(whoami)
+```
+
+..restart the terminal.  
+
+
+Install `Docker Compose`:
+
+```bash
+‌sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version
+```
+
+
+**That should be it for setting up the working environment for this project.**  
+<br>
 
 ## Setting up the VSCode ssh connection to the VM.
 
