@@ -1,155 +1,170 @@
 # Inception Project
 
-The Inception project was an incredibly enriching experience for me, and I've decided to document my journey through it in the form of a comprehensive guide.  
+_This project is part of the Common Core curriculum at 42 School. It is designed to provide a comprehensive understanding of containerization using Docker, focusing on manual setup and configuration of Docker containers for each service separately._ 
 
-The guide begins with the utilization of official Docker images sourced directly from Docker Hub. This initial step is crucial in gaining a fundamental understanding of how the system operates.  
+_It is a comprehensive guide for setting up and working environment, which involves creating and managing Docker containers manually. It includes instructions for setting up a Virtual Machine (VM), configuring Docker, and connecting to the VM using VSCode._
 
-Following this, I delve into the process of setting up each container manually. This involves creating custom Docker images based on Alpine Linux, a lightweight and security-oriented distribution. This hands-on approach provides a deeper insight into the inner workings of the system.  
-<br>
+---
 
-## SETTING UP THE WORKING ENVIRONMENT WITH VM and VSCode
+## Overview
 
-<br>
+This project is a hands-on learning experience designed to teach the fundamentals of containerization using Docker. It solves the problem of understanding container orchestration by guiding users through the process of creating and managing custom Docker images and containers.  
 
-### Setting up the VM.
+- Target audience: Students and developers learning Docker and containerization.
+- Key outcomes: A fully functional environment for containerized applications, including a VM setup, Docker installation, and container management.
 
-If you are doing this project on the school's computers, you have to use VirtualBox to create a Virtual Machine (VM) with a LINUX OS of your choice since you don't have `sudo` rights on the school's computers. I personally used the latest version of Debian at the time, mostly because it is lighter than Ubuntu.  
+---
 
-If you choose Ubuntu, be aware that most likely you won't have enough space to download it on any of the school's computers `Download` folder, so you will have to download it to your `sgoinfre` instead.  
+## Features
 
-A better choice would be to use `Debian` for your VM, since it is lighter than Ubuntu and the `.iso` image is much smaller.  
+- Step-by-step guide for setting up a Virtual Machine (VM) using VirtualBox.
+- Manual configuration of Docker and Docker Compose on a Debian-based VM.
+- SSH setup for seamless connection between the host machine and the VM.
+- Integration with VSCode for remote development using the `Remote - SSH` extension.
+- Comprehensive instructions for managing user permissions and installing necessary packages.
 
-here is the link to the download: (Installing Debian)[https://www.debian.org/distrib/netinst]  
+---
+
+## Tech Stack
+
+| **Category**   | **Technologies**                        |
+|----------------|-----------------------------------------|
+| Virtualization | VirtualBox                              |
+| OS             | Debian Linux, Ubuntu Linux              |
+| Deployment     | Docker, Docker Compose, Bash, Shell     |
+| Dev Tools      | Git, Make, Curl, VSCode                 |
+
+---
 
 
-Creating a VM from the downloaded ISO image should not be a problem. Make sure to allocate at least 10GB of space to the VM, and at least 2GB of `Base memory`, better 8. And about the same for CPU.  
+## Lessons Learned
 
-**NOTE**: *VM image must be installed in `sgoinfre` folder as well.*  
+This project has improved my skills in several areas, including:
 
-Once the OS is installed and running, make sure to install the `ssh` server, so you can connect right away to the VM from your host/school machine.  
+- Setting up and configuring Virtual Machines for development.
+- Installing and managing Docker and Docker Compose on Linux systems.
+- Establishing SSH connections and integrating remote development environments with VSCode.
+- Overcoming challenges related to resource constraints on school computers.
+- Understanding the workings of Docker containers and images, including how to build custom images from scratch using Dockerfiles and bash scripts to automate the configuration of the containers.
 
-**NOTE**: 
-- *`SSH` can be installed during the installation of `Debian` OS, so you don't have to do it later. On page `Software selection`, make sure to check the box for `SSH server`.*   
-- *It is better to use your school username when installing the OS, so you can connect to the VM using the same username.* 
-- *For the best experience you might want to clone the VM after its installation into `/tmp/` folder and work on the cloned version so you have the fastest possible VM on the school's computers. NOTE: that you would need to clone the VM every day you work on it, since the `/tmp/` folder is cleared every day.*   
+---
+
+## Try it out!
+
+Follow these steps to set up the project working environment locally:
+
+### Pre-requisites
+
+- VirtualBox installed on your machine.
+- Debian `.iso` image downloaded from [Debian Official Site](https://www.debian.org/distrib/netinst).
+- VSCode with the `Remote - SSH` extension installed.
+
+### Steps
+
+1. **Create a Virtual Machine**:
+- Allocate at least 10GB of disk space and 2GB of memory.
+- Install Debian OS and enable the SSH server during installation.
+
+2. **Configure the VM Network**:
+
+To connect to the VM from your host or school machine, you need to configure the network settings on the VM:  
+- Open the VM settings, and go to the Network tab.  
+- Under Adapter 1, ensure that Enable Network Adapter is checked and Attached to is set to NAT.  
+- Click Advanced, then click Port Forwarding.  
+- In the Port Forwarding window, click the + icon (top right) to add a new rule.  
+
+Configure the rule as follows:
+
+```
+Rule 1
+Protocol:   TCP
+Host IP:    127.0.0.1
+Host Port:  1111
+Guest IP:   10.0.2.15
+Guest Port: 22
+```
+
+*Note:* 
+*The Host Port can be any number above 1024, except for commonly used ports like 4242. All other fields should be set exactly as shown.*
+
+#### SSH setup recommendations:
+
+- `SSH` can be installed during the `Debian` OS installation, so you don’t need to install it manually later. On the `Software selection` page, make sure to check the box for `SSH server`.
+
+- It is better to use your school username when installing the OS, so you can connect to the VM using the same username.  
+
+- For the best experience you might want to clone the VM after its installation into `/tmp/` folder and work on the cloned version so you have the fastest possible VM on the school's computers. NOTE: that you would need to clone the VM every day you work on it, since the `/tmp/` folder is cleared every day.  
+
+- Doing this on the workstation at 42, it’s recommended to use your school username during the OS installation. This allows you to connect to the VM using the same username later.  
+
+- For optimal performance on school computers, consider cloning the VM into the `/tmp/` folder after installation and working on the cloned version. This setup provides the fastest experience. Otherwise, the Docker containers build slower.  
+Note: The `/tmp/` folder is cleared daily, so you will need to save your progress and clone the VM again each day you plan to work on it.  
 
 
 #### Manual `ssh` setup on the VM:
 
 ```bash
 sudo apt update
-
 sudo apt upgrade
-
 sudo apt install openssh-server
-
 sudo systemctl start ssh
-
 sudo systemctl enable ssh
 ```
 
-<br> 
-
-### Setting up the network in the VM settings.
-
-In order to connect to the VM from your host/school machine, you have to set up the network on the VM.  
-
-- Go to the VM settings, and in the `Network` tab on the `Adapter 1`.  
-
-- Make sure the `Enable Network Adapter` is checked, and the `Attached to` is set to `NAT`.  
-
-- Click on the `Advanced` button, and then on the `Port Forwarding` button.  
-
-- On the new window, click on the `+` button on the top right corner to add a new rule.  
-
-- Rule 1 >>  
-Protocol: `TCP`  
-Host IP: `127.0.0.1`  
-Host Port: `1111`  
-Guest IP: `10.0.2.15`  
-Guest Port: `22`  
-
-*NOTE*: *The `Host Port` can be any port you want (except the reserved numbers from 0 to 1024 and also 4242).*  
-*Other fields should be as indicated.*
-
-- Click `OK` on all windows to save the changes.  
-
-<br> 
-
-## Connecting to the VM from your host/school machine
-
-Once the network is set up, you should be able to connect to the VM from your host/school machine using the following command:
-
+3. **Connect to the VM**:
 ```bash
 ssh -p 1111 user@localhost
 ```
 
-**NOTE**: *The `user` is the username you created when installing the OS on the VM.*  
-
-*If you used your school username, you can connect to the VM using the following command:*  
-
-```bash
-ssh -p 1111 localhost
-```
-or 
-```bash
-ssh localhost -p 1111
-```
-<br>
-
-## Installing Necessary Packages
-
 Once connected from the host to the VM make sure the current user can run sudo commands.  
+In case you are not able to run `sudo` commands, you need to add your user to the `sudoers` file.
 
-For that to happen first switch to `root` with:
-```
+switching to `root` with and `user_name` to `/etc/sudoers` file:
+```bash
 su
-```
 
-and add your `user` to `/etc/sudoers` file with the following line:  
-```
 vi /etc/sudoers
-
+```
+in this file look for the line:
+```bash
 ...
 'your_username'    ALL=(ALL:ALL) ALL
-
 ```
-Save the file and exit.  
-`exit` to exit the `root` user.
 
-Then add the user to the `sudo` group:
-```
+type `exit` to quit the `root` user.
+
+And add the user to the `sudo` group:
+```bash
 sudo usermod -aG sudo $(whoami)
 ```
 
-
-Install the necessary packages:
-
+4. **Install Necessary Packages:**
 ```bash
+sudo apt update
+sudo apt upgrade
 sudo apt install git make curl
 ```
 
-Install `Docker` by following official documentation: (install docker on debian)[https://docs.docker.com/engine/install/debian/#install-using-the-repository]   
+5. **Installing Docker**
 
-step 1 and 2 are enough.
+Install `Docker` following the official [install docker on debian](https://docs.docker.com/engine/install/debian/#install-using-the-repository).  
 
-Check if `Docker` is installed and running:
+to check if `docker` is installed correctly: 
 
 ```bash
 sudo systemctl status docker
 ```
 
-Add the current user to the `docker` group:
-
+Add current user to the `docker` group to avoid using `sudo` with `docker` commands. Restart the terminal connection to apply changes:
 ```bash
 sudo usermod -aG docker $(whoami)
 ```
 
-..restart the terminal.  
+6. **Install Docker Compose**
 
+Install `Docker Compose` by following the official [install docker compose](https://docs.docker.com/compose/install/linux/) documentation.
 
-Install `Docker Compose`:
-
+or with the following command:
 ```bash
 ‌sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
@@ -158,26 +173,91 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 ```
 
+#### Setting Up the VSCode SSH Connection to the VM
 
-**That should be it for setting up the working environment for this project.**  
-<br>
+To connect to the VM from VSCode, follow these steps:
 
-## Setting up the VSCode ssh connection to the VM.
+1.	Install the `Remote - SSH` extension
+Open the Extensions tab in VSCode and search for ssh. The extension named `Remote - SSH` should appear first. Install it.
 
-In order to connect to the VM from VSCode, you have to install the `Remote - SSH` extension (look for `ssh` in the extensions tab, it should be the first one).  
+2.	Initiate the SSH connection
+After installation, click the green icon in the bottom-left corner of VSCode and select `Remote-SSH: Connect to Host…`
+Use the following command to connect to VM:  
 
-After installing the extension, click on the green icon on the very bottom left corner of VSCode, and select `Remote-SSH: Connect to Host...`. Using the same command as above, you should be able to connect to the VM `ssh user@localhost -p 1111`.  
+```bash
+ssh user@localhost -p 1111
+```
 
-The very first time, you should see a new window with the `ssh` configuration file. Click on the `+` button on the top right corner to add a new configuration (you can just choose the first option). This is done only once.  
+3. Configure the SSH host (first time only)  
+The first time you connect, a window will open displaying your SSH configuration file.
+Click the `+` icon in the top right corner to add a new configuration. Or select the default (first) option.
+This setup step is only needed once. (Make sure the username is correct in the configuration file.)  
 
-Then you can click on the green icon on the very bottom left corner of VSCode once more, and select `localhost` from the list. This should connect VSCode to the VM OS.  
+4. Connect to the VM.  
+After the configuration is saved, click the green icon again and select localhost from the host list. VSCode will then connect to VM’s OS.
 
-That should be it for setting up the working environment for this project.  
+That’s it! Your working environment should now be ready for this project.  
 
-If you are interested in following along with the guide I have created while doing this project, you can find it in this repo: [Docker Wordpress Nginx Setup](https://github.com/svvoii/Docker_WordPress_Nginx)
-
-I strongly recommend undertaking each step individually. This segmented approach will allow for a more thorough comprehension of the setup process.
 
 ---
-This project was submitted in January 2024 as a part of 42 Common Core curriculum.  
-[sbocanci](https://github.com/svvoii)  
+
+## Usage (Clone the repo and run the containers)
+
+- Clone the repository and navigate to the project directory.
+```bash
+git clone
+cd Docker_WordPress_Nginx
+```
+
+- Build and run the Docker containers using the provided `Makefile`:
+```bash
+make build
+make up
+```
+
+This will start the containers and set up the environment for the project. You can access the application in your web browser at `http://localhost:8080`.
+
+NOTE: The following folders are created in the home directory of the user on the machine where repo is cloned.  
+```bash
+mkdir -p /home/$(USER)/data/wordpress_data
+mkdir -p /home/$(USER)/data/mariadb_data
+```
+
+- To stop the containers, use:
+```bash
+make down
+```
+
+- To remove the containers and volumes, use:
+```bash
+make clean
+```
+
+- To view the logs of the containers, use:
+```bash
+make logs
+```
+
+- To list all Docker images, containers, volumes, and networks, use:
+```bash
+make ls
+```
+
+- To access the WordPress admin panel, navigate to `http://localhost:8080/wp-admin` in the web browser.
+
+
+## References
+
+To see the full details of the project — including how each container was built from scratch using a `Dockerfile`, `docker-compose.yml`, and a `Makefile` for easy build and run commands, along with `nginx` configuration and custom `bash` scripts — visit the following repository: [Docker Wordpress Nginx Setup](https://github.com/svvoii/Docker_WordPress_Nginx).
+
+
+For similar setup instructions to setup development environment for Wordpress with Nginx and MySQL, based on the official Docker images from Docker Hub (no customization needed), check out this repository: [Docker Wordpress Deveopment Setup](https://github.com/svvoii/Docker_WordPress_Site).  
+
+
+## Author
+
+[My GitHub](https://github.com/svvoii)  
+[My LinkedIn](https://www.linkedin.com/in/bocancia/)  
+[My Portfolio](https://sbocanci.me/)  
+
+---
